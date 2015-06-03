@@ -9,6 +9,7 @@
   "author": "Zachary Kuhn",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.4.0",
     "lodash": "^3.9.3"
   }
 }
