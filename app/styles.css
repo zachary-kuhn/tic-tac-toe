@@ -1,0 +1,39 @@
+.game {
+  margin: 0 auto;
+  
+  width: 302px;
+}
+
+.cell {
+  float: left;
+
+  display: inline-block;
+
+  width: 100px;
+  height: 100px;
+
+  line-height: 100px;
+  text-align: center;
+  font-size: 75px;
+}
+
+.cell + .cell {
+  border-left: 1px solid #000;
+}
+
+.row .cell {
+  border-bottom: 1px solid #000;
+}
+
+.row {
+  clear: both;
+}
+
+.row:last-of-type .cell {
+  border-bottom: none;
+}
+
+.reset-button {
+  width: 100%;
+  padding: 10px;
+}
