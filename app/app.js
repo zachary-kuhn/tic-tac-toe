@@ -36,6 +36,10 @@ module.factory('Cell', function (Players) {
       return _.contains(edges, this.row) && _.contains(edges, this.column);
     };
 
+    this.isSide = function () {
+      return _.contains(edges, this.row) !== _.contains(edges, this.column);
+    };
+
     this.isEmpty = function () {
       return this.val === Players.EMPTY;
     };
@@ -112,22 +116,142 @@ module.factory('Board', function (_, Players, Cell, Rows, Columns) {
   };
 });
 
-module.factory('Player', function (Players, Rows, Columns) {
+module.factory('FindWinningOpening', function (_, Players) {
+  return function (player) {
+    var isPlayer = { val: player },
+        isEmpty = { val: Players.EMPTY };
+
+    return function (board) {
+      return _(board.getAllTriples()).filter(function (triple) {
+        return _.filter(triple, isPlayer).length === 2 && _.filter(triple, isEmpty).length === 1;
+      }).flatten().filter(isEmpty).value();
+    };
+  };
+});
+
+module.factory('FindForkOpening', function (_, Players) {
+  return function (player) {
+    var isPlayer = { val: player },
+        isEmpty = { val: Players.EMPTY };
+
+    return function (board) {
+      return _(board.getAllTriples())
+        .filter(function (triple) {
+          return _.filter(triple, isPlayer).length === 1 && _.filter(triple, isEmpty).length === 2;
+        })
+        .flatten()
+        .groupBy(function (cell) {
+          return [cell.row, cell.column].join(' ');
+        })
+        .filter({ length: 2 })
+        .map(_.first)
+        .filter(isEmpty)
+        .value();
+    };
+  }
+});
+
+module.factory('FindNonForkableOpening', function (_, Players, FindForkOpening) {
+  var opponentFork = new FindForkOpening(Players.X);
+
+  return function (ourFork) {
+    return function (board) {
+      var openings = ourFork(board),
+          futureOpenings;
+
+      return _.filter(openings, function (opening) {
+        board.playMove(Players.O, opening.row, opening.column);
+
+        futureOpenings = opponentFork(board);
+
+        board.playMove(Players.EMPTY, opening.row, opening.column);
+
+        return futureOpenings.length === 0;
+      });
+    };
+  };
+});
+
+module.factory('FindCenterOpening', function (_, Players, Rows, Columns) {
+  return function () {
+    return function (board) {
+      var center = board.getCell(Rows.MIDDLE, Columns.CENTER);
+
+      if (center.val === Players.EMPTY) {
+        return [center];
+      } else {
+        return [];
+      }
+    };
+  };
+});
+
+module.factory('FindDiagonalOppositeOpponentOpening', function (_, Players) {
+  var isOpponent = { val: Players.X },
+      isEmpty = { val: Players.EMPTY };
+
+  return function () {
+    return function (board) {
+      return _(board.getDiagonals()).filter(function (triple) {
+        return _.find(triple, function (cell) {
+          return cell.isCorner() && cell.val === Players.X;
+        });
+      }).flatten().filter(function (cell) {
+        return cell.isCorner() && cell.isEmpty();
+      }).value();
+    };
+  };
+});
+
+module.factory('FindDiagonalOpening', function (_, Players) {
+  var isOpponent = { val: Players.X },
+      isEmpty = { val: Players.EMPTY };
+
+  return function () {
+    return function (board) {
+      return _(board.getDiagonals())
+        .flatten()
+        .filter(function (cell) {
+          return cell.isCorner() && cell.isEmpty();
+        }).value();
+    };
+  };
+});
+
+module.factory('FindSideOpening', function (_, Players) {
+  var isOpponent = { val: Players.X },
+      isEmpty = { val: Players.EMPTY };
+
+  return function () {
+    return function (board) {
+      return _(board.getAllTriples())
+        .flatten()
+        .filter(function (cell) {
+          return cell.isSide() && cell.isEmpty();
+        }).value();
+    };
+  };
+});
+
+module.factory('Player', function (Players, Rows, Columns,
+  FindWinningOpening, FindForkOpening, FindCenterOpening,
+  FindDiagonalOppositeOpponentOpening, FindDiagonalOpening,
+  FindSideOpening, FindNonForkableOpening) {
   return function (board) {
     var strategies = [
-      getWinningOpening(Players.O),
-      getWinningOpening(Players.X),
-      getForkOpening(Players.O),
-      andTheOpponentCantFork(getForkOpening(Players.X)),
-      getCenterOpening,
-      getDiagonalOpening,
-      getSideOpening,
-      getAnyOpening
+      new FindWinningOpening(Players.O),
+      new FindWinningOpening(Players.X),
+      new FindForkOpening(Players.O),
+      new FindNonForkableOpening(new FindForkOpening(Players.O)),
+      new FindNonForkableOpening(new FindCenterOpening()),
+      new FindNonForkableOpening(new FindDiagonalOppositeOpponentOpening()),
+      new FindNonForkableOpening(new FindDiagonalOpening()),
+      new FindSideOpening()
     ];
 
     this.doMove = function () {
       _.find(strategies, function (strategy) {
-        var openings = strategy(),
+        var openings = strategy(board),
             opening;
 
         if (!_.isEmpty(openings)) {
@@ -136,101 +260,6 @@ module.factory('Player', function (Players, Rows, Columns) {
         }
       });
     };
-
-    function getWinningOpening(player) {
-      var isPlayer = { val: player },
-          isEmpty = { val: Players.EMPTY };
-
-      return function () {
-        return _(board.getAllTriples()).filter(function (triple) {
-          return _.filter(triple, isPlayer).length === 2 && _.filter(triple, isEmpty).length === 1;
-        }).flatten().filter(isEmpty).value();
-      };
-    }
-
-    function getForkOpening(player) {
-      var isPlayer = { val: player },
-          isEmpty = { val: Players.EMPTY };
-
-      return function () {
-
-        return _(board.getAllTriples())
-          .filter(function (triple) {
-            return _.filter(triple, isPlayer).length === 1 && _.filter(triple, isEmpty).length === 2;
-          })
-          .flatten()
-          .groupBy(function (cell) {
-            return [cell.row, cell.column].join(' ');
-          })
-          .filter({ length: 2 })
-          .map(_.first)
-          .filter(isEmpty)
-          .value();
-        // return _(board.getAllCells()).find(function (cell) {
-        //   return _(board.getAllTriples()).filter(_.partial(_.contains, _, cell))
-        //     .filter(function (triple) {
-        //       return _.filter(triple, isPlayer).length === 1 && _.filter(triple, isEmpty).length === 2;
-        //     }).value().length === 2;
-        // });
-      };
-    }
-
-    function andTheOpponentCantFork(possibleForker) {
-      var openings = possibleForker(),
-          opponentForks = getForkOpening(Players.X),
-          futureOpenings;
-
-      return function () {
-        return _.filter(openings, function (opening) {
-          board.playMove(Players.O, opening.row, opening.column);
-
-          futureOpenings = possibleForker();
-
-          board.playMove(Players.EMPTY, opening.row, opening.column);
-
-          return futureOpenings.length === 0;
-        });
-      };
-    }
-
-    function getCenterOpening() {
-      var center = board.getCell(Rows.MIDDLE, Columns.CENTER);
-
-      if (center.val === Players.EMPTY) {
-        return [center];
-      } else {
-        return [];
-      }
-    }
-
-    function getSideOpening() {
-      var isOpponent = { val: Players.X };
-
-      return _(board.getAllTriples()).filter(function (triple) {
-        return _.any(triple, isOpponent);
-      }).flatten().filter(function (cell) {
-        return !cell.isCorner() && cell.isEmpty();
-      }).value();
-    }
-
-    function getDiagonalOpening() {
-      var isOpponent = { val: Players.X },
-          isEmpty = { val: Players.EMPTY };
-
-      return _(board.getDiagonals()).filter(function (triple) {
-        return _.any(triple, isOpponent);
-      }).flatten().filter(function (cell) {
-        return cell.isCorner() && cell.isEmpty();
-      }).value();
-    }
-
-    function getAnyOpening() {
-      var isEmpty = { val: Players.EMPTY };
-
-      return _(board.getAllTriples()).filter(function (triple) {
-        return _.any(triple, isEmpty);
-      }).flatten().filter(isEmpty).value();
-    }
   };
 });
 
