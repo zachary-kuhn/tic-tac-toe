@@ -7,9 +7,9 @@
 <body ng-app="ticTacToe">
   <div class="game" ng-controller="TicTacToeCtrl">
     <div>
-      <div class="row" ng-repeat="row in Rows">
-        <div class="cell" ng-repeat="col in Columns" ng-click="playMove(row, col)">
-          {{board.getCell(row, col).val}}
+      <div class="row" ng-repeat="row in board.getAllCells()">
+        <div class="cell" ng-repeat="cell in row" ng-click="playMove(cell)">
+          {{cell.val}}
         </div>
       </div>
     </div>

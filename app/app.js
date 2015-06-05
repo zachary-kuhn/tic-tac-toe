@@ -20,24 +20,13 @@ module.constant('Players', {
   EMPTY: ''
 });
 
-module.factory('Cell', function (Players) {
-  var edges = [0, 2];
-
+module.factory('Cell', function (_, Players) {
   return function (row, column) {
-    this.row = row;
-    this.column = column;
+    this.id = _.uniqueId();
     this.val = Players.EMPTY;
 
     this.mark = function (player) {
       return this.val = player;
-    };
-
-    this.isCorner = function () {
-      return _.contains(edges, this.row) && _.contains(edges, this.column);
-    };
-
-    this.isSide = function () {
-      return _.contains(edges, this.row) !== _.contains(edges, this.column);
     };
 
     this.isEmpty = function () {
@@ -53,33 +42,31 @@ module.factory('Board', function (_, Players, Cell, Rows, Columns) {
 
       LEFT = Columns.LEFT,
       CENTER = Columns.CENTER,
-      RIGHT = Columns.RIGHT;
+      RIGHT = Columns.RIGHT,
+
+      EMPTY = Players.EMPTY;
 
   return function () {
-    var cells = [new Cell(TOP, LEFT), new Cell(TOP, CENTER), new Cell(TOP, RIGHT),
-                 new Cell(MIDDLE, LEFT), new Cell(MIDDLE, CENTER), new Cell(MIDDLE, RIGHT),
-                 new Cell(BOTTOM, LEFT), new Cell(BOTTOM, CENTER), new Cell(BOTTOM, RIGHT)];
+    var cells = _.times(3, function () {
+      return _.times(3, function () {
+        return new Cell();
+      });
+    });
 
     this.getCell = function (row, column) {
-      return _.find(cells, { row: row, column: column });
+      return cells[row][column];
     };
 
     this.getAllCells = function () {
       return cells;
     };
 
-    this.playMove = function (player, row, column) {
-      return _.find(cells, { row: row, column: column }).mark(player);
-    };
-
     this.isWon = function (player) {
-      return _.some(this.getAllTriples(), function (triple) {
-        return _.filter(triple, { val: player }).length === 3;
-      });
+      return _.some(this.getAllTriples(), _.partial(_.all, _, { val: player }));
     };
 
     this.isTie = function () {
-      return !_.some(cells, { val: Players.EMPTY });
+      return !_(cells).flatten().some({ val: Players.EMPTY });
     }
 
     this.getAllTriples = function () {
@@ -91,11 +78,11 @@ module.factory('Board', function (_, Players, Cell, Rows, Columns) {
     };
 
     function getRow(row) {
-      return _.filter(cells, { row: row });
+      return cells[row];
     }
 
     function getColumn(column) {
-      return _.filter(cells, { column: column });
+      return _.map(cells, column);
     }
 
     this.getDiagonals = function () {
@@ -103,16 +90,36 @@ module.factory('Board', function (_, Players, Cell, Rows, Columns) {
     };
 
     function getDownwardDiagonal() {
-      return _.filter(cells, function (cell) {
-        return cell.row === cell.column
+      return _.filter(cells, function (row, idx) {
+        return row[idx];
       });
     }
 
     function getUpwardDiagonal() {
-      return _.filter(cells, function (cell) {
-        return cell.row === 2 - cell.column;
+      return _.filter(cells, function (row, idx) {
+        return row[2 - idx];
       });
     }
+
+    this.isCorner = function (cell) {
+      return _.contains(this.getCorners(), cell);
+    };
+
+    var edges = [0, 2];
+
+    this.getCorners = function () {
+      return [cells[0][0], cells[0][2],
+              cells[2][0], cells[2][2]];
+    };
+
+    this.isSide = function (cell) {
+      return _.contains(this.getSides(), cell);
+    };
+
+    this.getSides = function () {
+      return [cells[0][1], cells[1][0],
+              cells[1][2], cells[2][1]];
+    };
   };
 });
 
@@ -123,8 +130,8 @@ module.factory('FindWinningOpening', function (_, Players) {
 
     return function (board) {
       return _(board.getAllTriples()).filter(function (triple) {
-        return _.filter(triple, isPlayer).length === 2 && _.filter(triple, isEmpty).length === 1;
-      }).flatten().filter(isEmpty).value();
+          return _.filter(triple, isPlayer).length === 2 && _.filter(triple, isEmpty).length === 1;
+        }).flatten().filter(isEmpty).value();
     };
   };
 });
@@ -140,9 +147,7 @@ module.factory('FindForkOpening', function (_, Players) {
           return _.filter(triple, isPlayer).length === 1 && _.filter(triple, isEmpty).length === 2;
         })
         .flatten()
-        .groupBy(function (cell) {
-          return [cell.row, cell.column].join(' ');
-        })
+        .groupBy('id')
         .filter({ length: 2 })
         .map(_.first)
         .filter(isEmpty)
@@ -154,17 +159,17 @@ module.factory('FindForkOpening', function (_, Players) {
 module.factory('FindNonForkableOpening', function (_, Players, FindForkOpening) {
   var opponentFork = new FindForkOpening(Players.X);
 
-  return function (ourFork) {
+  return function (strategy) {
     return function (board) {
-      var openings = ourFork(board),
+      var openings = strategy(board),
           futureOpenings;
 
       return _.filter(openings, function (opening) {
-        board.playMove(Players.O, opening.row, opening.column);
+        opening.val = Players.O;
 
         futureOpenings = opponentFork(board);
 
-        board.playMove(Players.EMPTY, opening.row, opening.column);
+        opening.val = Players.EMPTY;
 
         return futureOpenings.length === 0;
       });
@@ -194,10 +199,10 @@ module.factory('FindDiagonalOppositeOpponentOpening', function (_, Players) {
     return function (board) {
       return _(board.getDiagonals()).filter(function (triple) {
         return _.find(triple, function (cell) {
-          return cell.isCorner() && cell.val === Players.X;
+          return board.isCorner(cell) && cell.val === Players.X;
         });
       }).flatten().filter(function (cell) {
-        return cell.isCorner() && cell.isEmpty();
+        return board.isCorner(cell) && cell.isEmpty();
       }).value();
     };
   };
@@ -209,10 +214,9 @@ module.factory('FindDiagonalOpening', function (_, Players) {
 
   return function () {
     return function (board) {
-      return _(board.getDiagonals())
-        .flatten()
+      return _(board.getCorners())
         .filter(function (cell) {
-          return cell.isCorner() && cell.isEmpty();
+          return cell.isEmpty();
         }).value();
     };
   };
@@ -224,10 +228,9 @@ module.factory('FindSideOpening', function (_, Players) {
 
   return function () {
     return function (board) {
-      return _(board.getAllTriples())
-        .flatten()
+      return _(board.getSides())
         .filter(function (cell) {
-          return cell.isSide() && cell.isEmpty();
+          return cell.isEmpty();
         }).value();
     };
   };
@@ -256,7 +259,7 @@ module.factory('Player', function (Players, Rows, Columns,
 
         if (!_.isEmpty(openings)) {
           opening = _.first(openings);
-          return board.playMove(Players.O, opening.row, opening.column);
+          return opening.val = Players.O;
         }
       });
     };
@@ -267,8 +270,8 @@ module.controller('TicTacToeCtrl', function ($scope, Players, Player, Rows, Colu
   $scope.Rows = Rows;
   $scope.Columns = Columns;
 
-  $scope.playMove = function (row, column) {
-    $scope.board.playMove(Players.X, row, column);
+  $scope.playMove = function (cell) {
+    cell.val = Players.X;
 
     checkStatus();
 
