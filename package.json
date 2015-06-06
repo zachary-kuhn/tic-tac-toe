@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.4.0",
+    "browserify": "^9.0.8",
     "express": "^4.12.4",
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
     "lodash": "^3.9.3"
   }
 }

@@ -1,0 +1,63 @@
+module.exports = function (_, Players, Cell, Rows, Columns) {
+  var TOP = Rows.TOP,
+      MIDDLE = Rows.MIDDLE,
+      BOTTOM = Rows.BOTTOM,
+
+      LEFT = Columns.LEFT,
+      CENTER = Columns.CENTER,
+      RIGHT = Columns.RIGHT;
+
+  function Board() {
+    this.cells = [[new Cell(), new Cell(), new Cell()],
+                  [new Cell(), new Cell(), new Cell()],
+                  [new Cell(), new Cell(), new Cell()]];
+  };
+
+  Board.prototype.getAllTriples = function () {
+    var rows = this.cells;
+    var cols = _.spread(_.zip)(this.cells);
+    var diagonals = this.getDiagonals();
+
+    return rows.concat(cols).concat(diagonals);
+  };
+
+  Board.prototype.getDiagonals = function () {
+    return [this.getDownwardDiagonal(), this.getUpwardDiagonal()];
+  };
+
+  Board.prototype.getDownwardDiagonal = function () {
+    return _.map(this.cells, function (row, idx) {
+      return row[idx];
+    });
+  };
+
+  Board.prototype.getUpwardDiagonal = function () {
+    return _.map(this.cells, function (row, idx) {
+      return row[RIGHT - idx];
+    });
+  };
+
+  Board.prototype.getCenter = function () {
+    return [this.cells[MIDDLE][CENTER]];
+  };
+
+  Board.prototype.isCorner = function (cell) {
+    return _.contains(this.getCorners(), cell);
+  };
+
+  Board.prototype.getCorners = function () {
+    return [this.cells[TOP][LEFT], this.cells[TOP][RIGHT],
+            this.cells[BOTTOM][LEFT], this.cells[BOTTOM][RIGHT]];
+  };
+
+  Board.prototype.isSide = function (cell) {
+    return _.contains(this.getSides(), cell);
+  };
+
+  Board.prototype.getSides = function () {
+    return [this.cells[TOP][CENTER], this.cells[MIDDLE][LEFT],
+            this.cells[MIDDLE][RIGHT], this.cells[BOTTOM][CENTER]];
+  };
+
+  return Board;
+};

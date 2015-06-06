@@ -5,26 +5,24 @@
   <link rel="stylesheet" href="styles.css"></link>
 </head>
 <body ng-app="ticTacToe">
-  <div class="game" ng-controller="TicTacToeCtrl">
+  <div class="game" ng-controller="BoardCtrl as boardCtrl">
     <div>
-      <div class="row" ng-repeat="row in board.getAllCells()">
-        <div class="cell" ng-repeat="cell in row" ng-click="playMove(cell)">
+      <div class="row" ng-repeat="row in boardCtrl.board.cells">
+        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.players['x'].doTurn(cell)">
           {{cell.val}}
         </div>
       </div>
     </div>
 
     <div>
-      <button class="reset-button" ng-click="reset()">Reset</button>
+      <button class="reset-button" ng-click="boardCtrl.reset()">Reset</button>
     </div>
 
     <div>
-      {{status}}
+      {{boardCtrl.status}}
     </div>
   </div>
 
-  <script src="libs/lodash/index.js"></script>
-  <script src="libs/angular/angular.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
