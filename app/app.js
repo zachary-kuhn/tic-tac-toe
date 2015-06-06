@@ -27,9 +27,12 @@ mod.factory('Cell', require('./boards/cell'));
 mod.factory('Board', require('./boards/board'));
 mod.factory('BoardStatus', require('./boards/status'));
 
+mod.factory('Player', require('./players/player'));
+mod.service('Tokens', require('./players/tokens'));
 mod.factory('ComputerStrategy', require('./players/computer-strategy'));
 mod.factory('ComputerPlayer', require('./players/computer'));
 mod.factory('HumanPlayer', require('./players/human'));
+
 mod.factory('ConditionBuilder', require('./players/strategies/condition-builder'));
 mod.factory('FindCenterOpening', require('./players/strategies/find-center-opening'));
 mod.factory('FindCornerOpening', require('./players/strategies/find-corner-opening'));

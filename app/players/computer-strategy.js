@@ -2,15 +2,16 @@ module.exports = function (_, Players,
   FindWinningOpening, FindForkOpening, FindCenterOpening,
   FindCornerOppositeOpponentOpening, FindCornerOpening,
   FindSideOpening, FindNonForkableOpening) {
-  return function (board) {
+  return function (board, token, opponentToken) {
+    var nonForkable = new FindNonForkableOpening(token, opponentToken);
     var strategies = [
-      new FindWinningOpening(Players.O),
-      new FindWinningOpening(Players.X),
-      new FindForkOpening(Players.O),
-      new FindNonForkableOpening(new FindCenterOpening()),
-      new FindNonForkableOpening(new FindCornerOppositeOpponentOpening()),
-      new FindNonForkableOpening(new FindCornerOpening()),
-      new FindSideOpening()
+      new FindWinningOpening(token),
+      new FindWinningOpening(opponentToken),
+      new FindForkOpening(token),
+      nonForkable(new FindCenterOpening()),
+      nonForkable(new FindCornerOppositeOpponentOpening()),
+      nonForkable(new FindCornerOpening()),
+      nonForkable(new FindSideOpening())
     ];
 
     this.execute = function () {

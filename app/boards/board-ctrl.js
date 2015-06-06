@@ -1,28 +1,43 @@
-module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, BoardStatus) {
+module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, BoardStatus, Tokens, $q) {
   var _this = this;
 
-  function checkStatus(player, token) {
-    _this.status = _this.boardStatus.get(player, token);
+  this.choosePlayer = function (token) {
+    _this.reset(token);
+  };
+
+  this.startTurn = function (token) {
+    var turn = $q.defer();
+
+    _this.players[token].giveTurn(turn);
+
+    turn.promise.then(function (cell) {
+      cell.mark(token);
+
+      if (!_this.boardStatus.get()) {
+        _this.startTurn(Tokens.getOpponent(token));
+      }
+    });
   }
 
-  this.reset = function () {
+  this.reset = function (token) {
+    var opponentToken = Tokens.getOpponent(token);
+
     _this.board = new Board();
     _this.boardStatus = new BoardStatus(_this.board);
+    _this.token = token;
     _this.players = {};
-    _this.players[Players.X] = new HumanPlayer(Players.X);
-    _this.players[Players.O] = new ComputerPlayer(Players.O, _this.board);
+    _this.players[token] = new HumanPlayer(token);
 
-    _this.players[Players.O].setOpponent(_this.players[Players.X]);
+    _this.players[opponentToken] = new ComputerPlayer(opponentToken, _this.board, token);
 
-    _.each(_this.players, function (player, token) {
-      player.getTurn().then(_.noop, _.noop, function (cell) {
-        checkStatus(player, token);
-      });
-    })
+    _this.players[opponentToken].setOpponent(_this.players[token]);
+
+    _this.startTurn(Players.X);
+
     _this.status = '';
   };
 
   (function init() {
-    _this.reset();
+    _this.reset(Players.X);
   }());
 };

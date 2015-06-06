@@ -8,7 +8,7 @@
   <div class="game" ng-controller="BoardCtrl as boardCtrl">
     <div>
       <div class="row" ng-repeat="row in boardCtrl.board.cells">
-        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.players['x'].doTurn(cell)">
+        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.players[boardCtrl.token].doTurn(cell)">
           {{cell.val}}
         </div>
       </div>
@@ -19,7 +19,12 @@
     </div>
 
     <div>
-      {{boardCtrl.status}}
+      <button class="reset-button" ng-click="boardCtrl.choosePlayer('x')">Choose X</button>
+      <button class="reset-button" ng-click="boardCtrl.choosePlayer('o')">Choose O</button>
+    </div>
+
+    <div>
+      {{boardCtrl.boardStatus.get()}}
     </div>
   </div>
 

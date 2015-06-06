@@ -1,11 +1,13 @@
-module.exports = function (_) {
+module.exports = function (_, Players) {
   function BoardStatus(board) {
     this.board = board;
   };
 
-  BoardStatus.prototype.get = function (player, token) {
-    if (this.isWon(token)) {
-      return player.victoryText;
+  BoardStatus.prototype.get = function () {
+    if (this.isWon(Players.X)) {
+      return 'Player X won!';
+    } else if (this.isWon(Players.O)) {
+      return 'Player O won!';
     } else if (this.isTie()) {
       return 'Tie!';
     } else {

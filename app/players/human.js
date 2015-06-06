@@ -1,17 +1,19 @@
-module.exports = function ($q) {
-  return function (player) {
-    this.player = player;
-    this.turn = $q.defer();
+module.exports = function (Player) {
+  function HumanPlayer(token) {
+    Player.call(this, token);
+
     this.victoryText = 'You won!';
+  }
 
-    this.doTurn = function (cell) {
-      if (cell && cell.isEmpty()) {
-        return this.turn.notify(cell.mark(this.player));
-      }
-    };
+  HumanPlayer.prototype = Object.create(Player.prototype);
 
-    this.getTurn = function () {
-      return this.turn.promise;
-    };
+  HumanPlayer.prototype.giveTurn = function (turn) {
+    this.turn = turn;
   };
+
+  HumanPlayer.prototype.doTurn = function (cell) {
+    this.turn.resolve(cell);
+  };
+
+  return HumanPlayer;
 };

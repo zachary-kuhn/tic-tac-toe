@@ -1,28 +1,26 @@
-module.exports = function ($q, _, ComputerStrategy) {
-  return function (player, board) {
-    this.player = player;
+module.exports = function ($q, _, ComputerStrategy, Player) {
+  function ComputerPlayer(token, board, opponentToken) {
+    Player.call(this, token);
+
     this.board = board;
-    this.strategy = new ComputerStrategy(this.board);
+    this.strategy = new ComputerStrategy(board, token, opponentToken);
     this.opponent = null;
-    this.turn = $q.defer();
     this.victoryText = 'You lost :(';
+  }
 
-    this.doTurn = function (cell) {
-      if (cell && cell.isEmpty()) {
-        return this.turn.notify(cell.mark(this.player));
-      }
-    };
+  ComputerPlayer.prototype = Object.create(Player.prototype);
 
-    this.getTurn = function () {
-      return this.turn.promise;
-    };
-
-    this.setOpponent = function (opponent) {
-      this.opponent = opponent;
-
-      this.opponent.getTurn().then(_.noop, _.noop, function (cell) {
-        this.doTurn(this.strategy.execute());
-      }.bind(this));
-    };
+  ComputerPlayer.prototype.giveTurn = function (turn) {
+    turn.resolve(this.strategy.execute());
   };
+
+  ComputerPlayer.prototype.setOpponent = function (opponent) {
+    this.opponent = opponent;
+
+    this.opponent.getTurn().then(_.noop, _.noop, function (cell) {
+      this.doTurn(this.strategy.execute());
+    }.bind(this));
+  };
+
+  return ComputerPlayer;
 };
