@@ -1,8 +1,15 @@
 var angular = require('angular');
+require('angular-touch');
 var _ = require('lodash');
 
-var mod = angular.module('ticTacToe', []);
+// prevent elastic rebounding on iOS
+document.ontouchmove = function(event){
+  event.preventDefault();
+};
 
+var mod = angular.module('ticTacToe', ['ngTouch']);
+
+// inline the small declarations
 mod.constant('_', _);
 
 mod.constant('Rows', {

@@ -3,6 +3,13 @@ module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, Board
 
   this.Players = Players;
 
+  function initBoard() {
+    _this.board = new Board([[new Cell(), new Cell(), new Cell()],
+                             [new Cell(), new Cell(), new Cell()],
+                             [new Cell(), new Cell(), new Cell()]]);
+    _this.boardStatus = new BoardStatus(_this.board);
+  }
+
   this.choosePlayer = function (token) {
     _this.reset(token);
   };
@@ -24,10 +31,7 @@ module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, Board
   this.reset = function (token) {
     var opponentToken = Tokens.getOpponent(token);
 
-    _this.board = new Board([[new Cell(), new Cell(), new Cell()],
-                             [new Cell(), new Cell(), new Cell()],
-                             [new Cell(), new Cell(), new Cell()]]);
-    _this.boardStatus = new BoardStatus(_this.board);
+    initBoard();
     _this.token = token;
     _this.players = {};
     _this.players[token] = new HumanPlayer(token);
@@ -38,7 +42,11 @@ module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, Board
     _this.status = '';
   };
 
+  this.isPopoverVisible = function () {
+    return _this.boardStatus.get() || !_this.token;
+  };
+
   (function init() {
-    _this.reset(Players.X);
+    initBoard();
   }());
 };

@@ -2,9 +2,11 @@
 <html>
 <head>
   <title>Tic Tac Toe</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css"></link>
 </head>
-<body ng-app="ticTacToe">
+<body ng-app="ticTacToe" ng-cloak>
   <div class="game" ng-controller="BoardCtrl as boardCtrl">
     <div>
       <div class="row" ng-repeat="row in boardCtrl.board.cells">
@@ -14,17 +16,19 @@
       </div>
     </div>
 
-    <div>
-      <button class="reset-button" ng-click="boardCtrl.reset(boardCtrl.token)">Reset</button>
-    </div>
+    <div class="status-backpane" ng-show="boardCtrl.isPopoverVisible()">
+      <div class="status" ng-show="boardCtrl.boardStatus.get()">
+        {{boardCtrl.boardStatus.get()}}
+      </div>
 
-    <div>
-      <button class="reset-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.X)">Choose X</button>
-      <button class="reset-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.O)">Choose O</button>
-    </div>
-
-    <div>
-      {{boardCtrl.boardStatus.get()}}
+      <div class="choose-player">
+        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.X)">
+          <span class="choose-text">play as</span>X
+        </button>
+        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.O)">
+          <span class="choose-text">play as</span>O
+        </button>
+      </div>
     </div>
   </div>
 

@@ -1,7 +1,24 @@
-.game {
-  margin: 0 auto;
-  
-  width: 302px;
+html, body {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+  display: -webkit-flex;
+  display:         flex;
+
+  -webkit-align-items: center;
+          align-items: center;
+
+  -webkit-justify-content: center;
+          justify-content: center;
+
+  margin: 0;
+
+  font-family: "helvetica neue", sans-serif;
 }
 
 .cell {
@@ -34,6 +51,76 @@
 }
 
 .reset-button {
+  margin-top: 40px;
+
   width: 100%;
+  height: 44px;
+
   padding: 10px;
+}
+
+.choose-player {
+  position: fixed;
+
+  bottom: 2%;
+
+  width: 100%;
+  height: 120px;
+
+  text-align: center;
+}
+
+.choose-text {
+  display: block;
+  font-size: 18px
+}
+
+.player-button {
+  -webkit-appearance: none;
+
+  margin: 0 10px;
+
+  border: 1px solid #000;
+
+  width: 40%;
+  max-width: 120px;
+  height: 100%;
+
+  padding: 0;
+
+  background-color: #fff;
+  font-size: 60px;
+}
+
+.status {
+  position: fixed;
+
+  top: 15%;
+  left: 0;
+
+  margin-top: -60px;
+
+  width: 100%;
+  height: 120px;
+
+  background-color: #EB1767;
+
+  color: #fff;
+  line-height: 120px;
+  text-align: center;
+  font-size: 44px;
+}
+
+.status-backpane {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: rgba(128, 128, 128, 0.4);
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
