@@ -24,15 +24,11 @@ module.exports = function (_, Rows, Columns) {
   };
 
   Board.prototype.getDownwardDiagonal = function () {
-    return _.map(this.cells, function (row, idx) {
-      return row[idx];
-    });
+    return [this.cells[TOP][LEFT], this.cells[MIDDLE][CENTER], this.cells[BOTTOM][RIGHT]];
   };
 
   Board.prototype.getUpwardDiagonal = function () {
-    return _.map(this.cells, function (row, idx) {
-      return row[RIGHT - idx];
-    });
+    return [this.cells[TOP][RIGHT], this.cells[MIDDLE][CENTER], this.cells[BOTTOM][LEFT]];
   };
 
   Board.prototype.getCenter = function () {

@@ -9,7 +9,7 @@
     <div>
       <div class="row" ng-repeat="row in boardCtrl.board.cells">
         <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.players[boardCtrl.token].doTurn(cell)">
-          {{cell.val}}
+          {{cell.token}}
         </div>
       </div>
     </div>

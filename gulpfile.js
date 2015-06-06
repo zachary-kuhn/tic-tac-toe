@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
+var karma = require('karma').server;
 
 var paths = {
   js: 'app/**/*.js',
@@ -18,8 +19,8 @@ gulp.task('build', ['build:js', 'build:css', 'build:html']);
 
 gulp.task('build:js', function() {
     gulp.src('app/app.js')
-        .pipe(browserify())
-        .pipe(gulp.dest('./build/'))
+      .pipe(browserify())
+      .pipe(gulp.dest('./build/'))
 });
 
 gulp.task('build:css', function () {
@@ -30,4 +31,11 @@ gulp.task('build:css', function () {
 gulp.task('build:html', function () {
   gulp.src('app/index.html')
     .pipe(gulp.dest('./build/'));
+});
+
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    action: 'watch'
+  }, done);
 });

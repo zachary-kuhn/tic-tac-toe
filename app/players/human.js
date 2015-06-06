@@ -10,7 +10,9 @@ module.exports = function (Player) {
   };
 
   HumanPlayer.prototype.doTurn = function (cell) {
-    this.turn.resolve(cell);
+    if (cell.isEmpty()) {
+      this.turn.resolve(cell);
+    }
   };
 
   return HumanPlayer;

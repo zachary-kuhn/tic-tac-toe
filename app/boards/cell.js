@@ -1,18 +1,20 @@
 module.exports = function (_, Players) {
-  return function () {
+  function Cell(token) {
     this.id = _.uniqueId();
-    this.val = Players.EMPTY;
+    this.token = token || Players.EMPTY;
+  }
 
-    this.isEmpty = function () {
-      return this.val === Players.EMPTY;
-    };
-
-    this.isPlayer = function (player) {
-      return this.val === player;
-    };
-
-    this.mark = function (player) {
-      return this.val = player;
-    };
+  Cell.prototype.isEmpty = function () {
+    return this.token === Players.EMPTY;
   };
+
+  Cell.prototype.isPlayer = function (token) {
+    return this.token === token;
+  };
+
+  Cell.prototype.mark = function (token) {
+    return this.token = token;
+  };
+
+  return Cell;
 };
