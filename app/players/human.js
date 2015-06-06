@@ -1,8 +1,6 @@
 module.exports = function (Player) {
   function HumanPlayer(token) {
     Player.call(this, token);
-
-    this.victoryText = 'You won!';
   }
 
   HumanPlayer.prototype = Object.create(Player.prototype);

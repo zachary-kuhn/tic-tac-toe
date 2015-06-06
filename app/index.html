@@ -15,12 +15,12 @@
     </div>
 
     <div>
-      <button class="reset-button" ng-click="boardCtrl.reset()">Reset</button>
+      <button class="reset-button" ng-click="boardCtrl.reset(boardCtrl.token)">Reset</button>
     </div>
 
     <div>
-      <button class="reset-button" ng-click="boardCtrl.choosePlayer('x')">Choose X</button>
-      <button class="reset-button" ng-click="boardCtrl.choosePlayer('o')">Choose O</button>
+      <button class="reset-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.X)">Choose X</button>
+      <button class="reset-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.O)">Choose O</button>
     </div>
 
     <div>

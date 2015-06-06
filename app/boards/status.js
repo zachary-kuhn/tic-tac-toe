@@ -16,10 +16,16 @@ module.exports = function (_, Players) {
   };
 
   BoardStatus.prototype.isWon = function (player) {
-    return _.some(this.board.getAllTriples(), _.partial(_.all, _, _.method('isPlayer', player)));
+    // the board is won when any triple has all of its cells marked by the
+    // player
+    return _.some(
+      this.board.getAllTriples(),
+      _.partial(_.all, _, _.method('isPlayer', player)));
   };
 
   BoardStatus.prototype.isTie = function () {
+    // the board is a tie when there are no more empty cells (and technically
+    // when no one has won but that is not handled here)
     return !_(this.board.cells).flatten().some(_.method('isEmpty'));
   };
 

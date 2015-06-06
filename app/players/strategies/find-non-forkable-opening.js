@@ -16,6 +16,11 @@ module.exports = function (_, Players, FindForkOpening, FindWinningOpening) {
 
           opening.mark(Players.EMPTY);
 
+          /*
+           * Choose a place where the opponent cannot fork or a place where next
+           * turn we can win in a spot that isn't a fork for the opponent. This
+           * will force the opponent to block our winning move or to lose.
+           */
           return futureOpenings.length === 0 ||
               _.difference(futureWin, futureOpenings).length > 0;
         });

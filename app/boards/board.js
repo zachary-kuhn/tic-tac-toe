@@ -1,4 +1,4 @@
-module.exports = function (_, Players, Cell, Rows, Columns) {
+module.exports = function (_, Rows, Columns) {
   var TOP = Rows.TOP,
       MIDDLE = Rows.MIDDLE,
       BOTTOM = Rows.BOTTOM,
@@ -7,10 +7,8 @@ module.exports = function (_, Players, Cell, Rows, Columns) {
       CENTER = Columns.CENTER,
       RIGHT = Columns.RIGHT;
 
-  function Board() {
-    this.cells = [[new Cell(), new Cell(), new Cell()],
-                  [new Cell(), new Cell(), new Cell()],
-                  [new Cell(), new Cell(), new Cell()]];
+  function Board(cells) {
+    this.cells = cells;
   };
 
   Board.prototype.getAllTriples = function () {

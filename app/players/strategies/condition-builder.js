@@ -1,15 +1,17 @@
 module.exports = function (_, Players) {
+  /*
+   * A condition builder is a domain specific language for describing how many
+   * of what token appear in a triple on a tic-tac-toe board.
+   */
   return function Builder(_and) {
     var count = 0;
     var player = Players.EMPTY;
-    var and = _and;
+    var and = _and || function () {
+        return true;
+      };
 
     function builder(triple) {
-      if (and) {
-        return and(triple) && _.filter(triple, _.method('isPlayer', player)).length === count;
-      } else {
-        return _.filter(triple, _.method('isPlayer', player)).length === count;
-      }
+      return and(triple) && _.filter(triple, _.method('isPlayer', player)).length === count;
     }
 
     builder.has = function (_count) {
