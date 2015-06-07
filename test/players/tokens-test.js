@@ -27,5 +27,11 @@ describe('Tokens', function () {
     it('should return O when given X', function () {
       expect(Tokens.getOpponent(O)).to.eql(X);
     });
+
+    it('should throw an error when given bad input', function () {
+      expect(function () {
+        Tokens.getOpponent('');
+      }).to.throw(Error);
+    });
   });
 });
