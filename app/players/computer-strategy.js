@@ -26,7 +26,7 @@ module.exports = /* @ngInject */ function (_,
       new FindWinningOpening(opponentToken),
       new FindForkOpening(token),
       nonForkable(new FindCenterOpening()),
-      nonForkable(new FindCornerOppositeOpponentOpening()),
+      nonForkable(new FindCornerOppositeOpponentOpening(opponentToken)),
       nonForkable(new FindCornerOpening()),
       nonForkable(new FindSideOpening())
     ];

@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players) {
-  return function () {
+module.exports = /* @ngInject */ function (_) {
+  return function (opponent) {
     /*
      * To find a corner opposite the opponent, we look at all diagonals on the
      * board with an opponent in the corner. From that filtered list of
@@ -10,7 +10,7 @@ module.exports = /* @ngInject */ function (_, Players) {
      */
     return function (board) {
       function hasOpponentCorner(cell) {
-        return board.isCorner(cell) && cell.isPlayer(Players.X);
+        return board.isCorner(cell) && cell.isPlayer(opponent);
       }
 
       function isEmptyCorner(cell) {

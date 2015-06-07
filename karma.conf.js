@@ -1,19 +1,22 @@
 module.exports = function (config) {
   config.set({
 
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['browserify', 'mocha', 'chai'],
 
     files: [
-      'build/app.js',
+      'app/**/*.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'test/**/*.js'
     ],
 
+    preprocessors: {
+      'app/**/*.js': ['browserify']
+    },
+
     browsers: ['PhantomJS'],
 
     reporters: [
-      'dots',
-      // 'coverage'
+      'progress', 'coverage'
     ],
 
     basePath: './',
@@ -24,5 +27,9 @@ module.exports = function (config) {
     reportSlowerThan: 500,
     runnerPort: 9100,
 
+    browserify: {
+      debug: true,
+      transform: ['browserify-istanbul']
+    }
   });
 };
