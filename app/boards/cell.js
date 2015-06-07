@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players) {
   function Cell(token) {
     this.id = _.uniqueId();
@@ -13,7 +15,7 @@ module.exports = function (_, Players) {
   };
 
   Cell.prototype.mark = function (token) {
-    return this.token = token;
+    this.token = token;
   };
 
   return Cell;

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_) {
   return function () {
     return function (board) {

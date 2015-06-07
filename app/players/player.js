@@ -1,4 +1,6 @@
-module.exports = function ($q, Players) {
+'use strict';
+
+module.exports = function () {
   function Player(token) {
     this.token = token;
   }

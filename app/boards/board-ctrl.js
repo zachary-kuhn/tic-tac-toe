@@ -1,49 +1,49 @@
-module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, BoardStatus, Tokens, $q, Cell) {
-  var _this = this;
+'use strict';
 
+module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, BoardStatus, Tokens, $q, Cell) {
   this.Players = Players;
 
   function initBoard() {
-    _this.board = new Board([[new Cell(), new Cell(), new Cell()],
+    this.board = new Board([[new Cell(), new Cell(), new Cell()],
                              [new Cell(), new Cell(), new Cell()],
                              [new Cell(), new Cell(), new Cell()]]);
-    _this.boardStatus = new BoardStatus(_this.board);
+    this.boardStatus = new BoardStatus(this.board);
   }
 
   this.choosePlayer = function (token) {
-    _this.reset(token);
+    this.reset(token);
   };
 
   this.startTurn = function (token) {
     var turn = $q.defer();
 
-    _this.players[token].giveTurn(turn);
+    this.players[token].giveTurn(turn);
 
     turn.promise.then(function (cell) {
       cell.mark(token);
 
-      if (!_this.boardStatus.get()) {
-        _this.startTurn(Tokens.getOpponent(token));
+      if (!this.boardStatus.get()) {
+        this.startTurn(Tokens.getOpponent(token));
       }
     });
-  }
+  };
 
   this.reset = function (token) {
     var opponentToken = Tokens.getOpponent(token);
 
     initBoard();
-    _this.token = token;
-    _this.players = {};
-    _this.players[token] = new HumanPlayer(token);
-    _this.players[opponentToken] = new ComputerPlayer(opponentToken, _this.board, token);
+    this.token = token;
+    this.players = {};
+    this.players[token] = new HumanPlayer(token);
+    this.players[opponentToken] = new ComputerPlayer(opponentToken, this.board, token);
 
-    _this.startTurn(Players.X);
+    this.startTurn(Players.X);
 
-    _this.status = '';
+    this.status = '';
   };
 
   this.isPopoverVisible = function () {
-    return _this.boardStatus.get() || !_this.token;
+    return this.boardStatus.get() || !this.token;
   };
 
   (function init() {

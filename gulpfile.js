@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var karma = require('karma').server;
+var lint = require('gulp-eslint');
 
 var paths = {
   js: 'app/**/*.js',
@@ -38,4 +39,10 @@ gulp.task('test', function (done) {
     configFile: __dirname + '/karma.conf.js',
     action: 'watch'
   }, done);
+});
+
+gulp.task('lint', function () {
+  gulp.src(paths.js)
+    .pipe(lint())
+    .pipe(lint.format());
 });

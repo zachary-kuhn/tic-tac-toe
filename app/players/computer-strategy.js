@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_,
   FindWinningOpening, FindForkOpening, FindCenterOpening,
   FindCornerOppositeOpponentOpening, FindCornerOpening,

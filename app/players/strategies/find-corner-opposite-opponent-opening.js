@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players) {
   return function () {
     /*
@@ -8,7 +10,7 @@ module.exports = function (_, Players) {
      */
     return function (board) {
       function hasOpponentCorner(cell) {
-        return board.isCorner(cell) && cell.isPlayer(Players.X)
+        return board.isCorner(cell) && cell.isPlayer(Players.X);
       }
 
       function isEmptyCorner(cell) {

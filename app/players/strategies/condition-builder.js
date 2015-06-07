@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players) {
   /*
    * A condition builder is a domain specific language for describing how many

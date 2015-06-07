@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players, ConditionBuilder) {
   return function (player) {
     /*

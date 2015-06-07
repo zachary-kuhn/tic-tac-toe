@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (Player) {
   function HumanPlayer(token) {
     Player.call(this, token);

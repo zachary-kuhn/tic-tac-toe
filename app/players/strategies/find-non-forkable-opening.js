@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players, FindForkOpening, FindWinningOpening) {
   return function (token, opponentToken) {
     var opponentFork = new FindForkOpening(opponentToken),
@@ -6,7 +8,7 @@ module.exports = function (_, Players, FindForkOpening, FindWinningOpening) {
     return function (strategy) {
       return function (board) {
         var openings = strategy(board),
-            futureOpenings;
+            futureOpenings, futureWin;
 
         return _.filter(openings, function (opening) {
           opening.mark(token);

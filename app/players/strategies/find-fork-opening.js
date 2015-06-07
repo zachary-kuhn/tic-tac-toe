@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Players, ConditionBuilder) {
   return function (player) {
     /*
@@ -22,5 +24,5 @@ module.exports = function (_, Players, ConditionBuilder) {
         .filter(_.method('isEmpty'))
         .value();
     };
-  }
+  };
 };

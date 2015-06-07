@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (_, Rows, Columns) {
   var TOP = Rows.TOP,
       MIDDLE = Rows.MIDDLE,
@@ -9,7 +11,7 @@ module.exports = function (_, Rows, Columns) {
 
   function Board(cells) {
     this.cells = cells;
-  };
+  }
 
   Board.prototype.getAllTriples = function () {
     var rows = this.cells;

@@ -1,7 +1,9 @@
+'use strict';
+
 module.exports = function (_, Players) {
   function BoardStatus(board) {
     this.board = board;
-  };
+  }
 
   BoardStatus.prototype.get = function () {
     if (this.isWon(Players.X)) {
