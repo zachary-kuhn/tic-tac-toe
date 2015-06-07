@@ -1,5 +1,5 @@
 describe('BoardStatus', function () {
-  var Players, Board, Cell, _;
+  var Tokens, Board, Cell, _;
 
   var status;
 
@@ -17,8 +17,8 @@ describe('BoardStatus', function () {
 
   beforeEach(module('ticTacToe'));
 
-  beforeEach(inject(function (Board, Cell, BoardStatus, _Players_, ___) {
-    Players = _Players_;
+  beforeEach(inject(function (Board, Cell, BoardStatus, _Tokens_, ___) {
+    Tokens = _Tokens_;
     _ = ___;
 
     first = new Cell();
@@ -40,8 +40,8 @@ describe('BoardStatus', function () {
 
   describe('#isWon', function () {
     it('should be false when no triple is complete', function () {
-      expect(status.isWon(Players.X)).to.be.false;
-      expect(status.isWon(Players.O)).to.be.false;
+      expect(status.isWon(Tokens.X)).to.be.false;
+      expect(status.isWon(Tokens.O)).to.be.false;
     });
 
     function markWithToken(triple, token) {
@@ -52,16 +52,16 @@ describe('BoardStatus', function () {
 
     function resetTriple(triple) {
       _.forEach(triple, function (cell) {
-        cell.mark(Players.EMPTY);
+        cell.mark(Tokens.EMPTY);
       });
     }
 
     it('should be true for player X when any triple belongs to the player X', function () {
       _.forEach(board.getAllTriples(), function (triple) {
-        markWithToken(triple, Players.X);
+        markWithToken(triple, Tokens.X);
 
-        expect(status.isWon(Players.X)).to.be.true;
-        expect(status.isWon(Players.O)).to.be.false;
+        expect(status.isWon(Tokens.X)).to.be.true;
+        expect(status.isWon(Tokens.O)).to.be.false;
 
         resetTriple(triple);
       });
@@ -69,10 +69,10 @@ describe('BoardStatus', function () {
 
     it('should be true for player O when any triple belongs to the player O', function () {
       _.forEach(board.getAllTriples(), function (triple) {
-        markWithToken(triple, Players.O);
+        markWithToken(triple, Tokens.O);
 
-        expect(status.isWon(Players.O)).to.be.true;
-        expect(status.isWon(Players.X)).to.be.false;
+        expect(status.isWon(Tokens.O)).to.be.true;
+        expect(status.isWon(Tokens.X)).to.be.false;
 
         resetTriple(triple);
       });
@@ -80,7 +80,7 @@ describe('BoardStatus', function () {
   });
 
   function markBoardAsTie() {
-    var X = Players.X, O = Players.O;
+    var X = Tokens.X, O = Tokens.O;
 
     first.mark(X);
     second.mark(O);
@@ -111,7 +111,7 @@ describe('BoardStatus', function () {
     });
 
     it('should return "Player X won!" when player X has three in a row', function () {
-      var X = Players.X;
+      var X = Tokens.X;
 
       first.mark(X);
       second.mark(X);
@@ -121,7 +121,7 @@ describe('BoardStatus', function () {
     });
 
     it('should return "Player O won!" when player O has three in a row', function () {
-      var O = Players.O;
+      var O = Tokens.O;
 
       first.mark(O);
       second.mark(O);

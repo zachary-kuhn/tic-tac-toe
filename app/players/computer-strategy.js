@@ -3,9 +3,11 @@
 module.exports = /* @ngInject */ function (_,
     FindWinningOpening, FindForkOpening, FindCenterOpening,
     FindCornerOppositeOpponentOpening, FindCornerOpening,
-    FindSideOpening, FindNonForkableOpening) {
-  return function (board, token, opponentToken) {
-    var nonForkable = new FindNonForkableOpening(token, opponentToken);
+    FindSideOpening, FindNonForkableOpening, Tokens) {
+  return function (token) {
+    var opponentToken = Tokens.getOpponent(token),
+        nonForkable = new FindNonForkableOpening(token, opponentToken);
+
     /*
      * Our strategy marks our token in the following order:
      *
@@ -31,7 +33,7 @@ module.exports = /* @ngInject */ function (_,
       nonForkable(new FindSideOpening())
     ];
 
-    this.execute = function () {
+    this.execute = function (board) {
       return _(strategies).map(function (strategy) {
           return _.first(strategy(board));
         })

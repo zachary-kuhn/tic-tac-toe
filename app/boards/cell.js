@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players) {
+module.exports = /* @ngInject */ function (_, Tokens) {
   function Cell(token) {
     this.id = _.uniqueId();
-    this.token = token || Players.EMPTY;
+    this.token = token || Tokens.EMPTY;
   }
 
   Cell.prototype.isEmpty = function () {
-    return this.token === Players.EMPTY;
+    return this.token === Tokens.EMPTY;
   };
 
   Cell.prototype.isPlayer = function (token) {

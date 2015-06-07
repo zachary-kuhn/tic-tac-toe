@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players) {
+module.exports = /* @ngInject */ function (_, Tokens) {
   /*
    * A condition builder is a domain specific language for describing how many
    * of what token appear in a triple on a tic-tac-toe board.
    */
   return function Builder(_and) {
     var count = 0;
-    var player = Players.EMPTY;
+    var player = Tokens.EMPTY;
     var and = _and || function () {
         return true;
       };

@@ -14,14 +14,14 @@ describe('FindWinningOpening', function () {
   }
 
   describe('for player O', function () {
-    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindWinningOpening(Players.O);
+    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindWinningOpening(Tokens.O);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return an empty array when there are no winning moves', function () {
@@ -48,14 +48,14 @@ describe('FindWinningOpening', function () {
   });
 
   describe('for player X', function () {
-    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindWinningOpening(Players.X);
+    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindWinningOpening(Tokens.X);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return an empty array when there are no winning moves', function () {

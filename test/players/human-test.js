@@ -13,21 +13,21 @@ describe('HumanPlayer', function () {
     });
   }
 
-  beforeEach(inject(function (HumanPlayer, Players, Board, _Cell_, _$q_, ___, $rootScope) {
+  beforeEach(inject(function (HumanPlayer, Tokens, Board, _Cell_, _$q_, ___, $rootScope) {
     Cell = _Cell_;
     _ = ___;
     $q = _$q_;
     $scope = $rootScope.$new();
-    X = Players.X;
-    O = Players.O;
-    EMPTY = Players.EMPTY;
+    X = Tokens.X;
+    O = Tokens.O;
+    EMPTY = Tokens.EMPTY;
     center = new Cell();
     left = new Cell();
     var board = new Board(_.map([[EMPTY, EMPTY, EMPTY],
                                  [left, center, EMPTY],
                                  [EMPTY, EMPTY, EMPTY]],
                                 toCell));
-    player = new HumanPlayer(Players.X);
+    player = new HumanPlayer(Tokens.X);
   }));
 
   it('should have to receive an action before performing its turn', function () {

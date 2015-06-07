@@ -13,10 +13,10 @@ describe('Tokens', function () {
     });
   }
 
-  beforeEach(inject(function (_Tokens_, Players) {
+  beforeEach(inject(function (_Tokens_) {
     Tokens = _Tokens_;
-    X = Players.X;
-    O = Players.O;
+    X = Tokens.X;
+    O = Tokens.O;
   }));
 
   describe('#getOpponent', function () {

@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players, ConditionBuilder) {
-  return function (player) {
+module.exports = /* @ngInject */ function (_, Tokens, ConditionBuilder) {
+  return function (token) {
     /*
      * A fork is any place where it creates an opportunity for the player to win
      * in one of two ways. Because of this, an opponent cannot block both,
@@ -15,7 +15,7 @@ module.exports = /* @ngInject */ function (_, Players, ConditionBuilder) {
     return function (board) {
       return _(board.getAllTriples())
         .filter(
-          new ConditionBuilder().has(1).of(player).and().has(2).of(Players.EMPTY)
+          new ConditionBuilder().has(1).of(token).and().has(2).of(Tokens.EMPTY)
         )
         .flatten()
         .groupBy('id')

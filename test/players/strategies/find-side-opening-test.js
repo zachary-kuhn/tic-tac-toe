@@ -3,14 +3,14 @@ describe('FindSideOpening', function () {
 
   beforeEach(module('ticTacToe'));
 
-  beforeEach(inject(function (FindSideOpening, ___, _Board_, _Cell_, Players) {
+  beforeEach(inject(function (FindSideOpening, ___, _Board_, _Cell_, Tokens) {
     strategy = new FindSideOpening();
     _ = ___;
     Board = _Board_;
     Cell = _Cell_;
-    X = Players.X;
-    O = Players.O;
-    EMPTY = Players.EMPTY;
+    X = Tokens.X;
+    O = Tokens.O;
+    EMPTY = Tokens.EMPTY;
   }));
 
   function toCell(row) {

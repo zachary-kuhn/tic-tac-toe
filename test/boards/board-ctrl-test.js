@@ -1,186 +1,82 @@
 describe('BoardCtrl', function () {
-  var controller, Players, Board, Cell, $scope;
+  var controller, Tokens, Board, Cell, $scope;
 
-  beforeEach(module('ticTacToe'));
+  beforeEach(module('ticTacToe', function ($provide) {
+    $provide.factory('Game', function () {
+      function MockGame() {
+        this.hasStarted = false;
+      }
 
-  beforeEach(inject(function ($controller, _Players_, _Board_, _Cell_, $rootScope) {
-    Players = _Players_;
+      MockGame.prototype.start = function () {
+        this.hasStarted = true;
+      };
+
+      MockGame.prototype.isFinished = function () {
+        return false;
+      };
+
+      MockGame.prototype.hasNoPlayers = function () {
+        return false;
+      };
+
+      return MockGame;
+    });
+  }));
+
+  beforeEach(inject(function ($controller, _Tokens_, _Board_, _Cell_, $rootScope) {
+    Tokens = _Tokens_;
     Board = _Board_;
     Cell = _Cell_;
     $scope = $rootScope.$new();
     controller = $controller('BoardCtrl', { $scope: $scope });
   }));
 
-  describe('#reset', function () {
+  describe('#choosePlayer', function () {
     it('should set the player\'s token to X if passed', function () {
-      controller.reset(Players.X);
+      controller.choosePlayer(Tokens.X);
 
-      expect(controller.token).to.equal(Players.X);
+      expect(controller.token).to.equal(Tokens.X);
     });
 
     it('should set the player\'s token to O if passed', function () {
-      controller.reset(Players.O);
+      controller.choosePlayer(Tokens.O);
 
-      expect(controller.token).to.equal(Players.O);
+      expect(controller.token).to.equal(Tokens.O);
     });
 
-    it('should empty the board\'s status', function () {
-      controller.reset(Players.X);
+    it('should create a new game', function () {
+      var previousGame = controller.game;
 
-      expect(controller.status).to.equal('');
+      controller.choosePlayer(Tokens.X);
+
+      expect(controller.game).to.not.equal(previousGame);
     });
 
-    it('should start the turn for Player X', function () {
-      controller.startTurn = function (token) {
-        expect(token).to.equal(Players.X);
-      };
+    it('should start a new game', function () {
+      controller.choosePlayer(Tokens.X);
 
-      controller.reset(Players.X);
-    });
-
-    it('should start the turn for Player X even if the player selects O', function () {
-      controller.startTurn = function (token) {
-        expect(token).to.equal(Players.X);
-      };
-
-      controller.reset(Players.O);
-    });
-
-    it('should reset the board', function () {
-      var previousTriples = controller.board.getAllTriples();
-
-      controller.reset(Players.X);
-
-      expect(controller.board.getAllTriples()).to.not.eql(previousTriples);
-    });
-  });
-
-  describe('#startTurn', function () {
-    it('should give the turn to a player', function () {
-      controller.reset(Players.X);
-
-      function MockPlayer() {}
-
-      MockPlayer.prototype.giveTurn = function (turn) {
-        expect(turn).to.not.be.empty;
-      };
-
-      controller.players[Players.X] = new MockPlayer();
-
-      controller.startTurn(Players.X);
-    });
-
-    it('should hand the turn over to the other player once the current player has finished', function () {
-      controller.reset(Players.X);
-
-      function MockXPlayer() {}
-
-      MockXPlayer.prototype.giveTurn = function (turn) {
-        turn.resolve(controller.board.getCenter()[0]);
-      };
-
-      function MockOPlayer() {}
-
-      MockOPlayer.prototype.giveTurn = function (turn) {
-        expect(turn).to.not.be.empty;
-      };
-
-      controller.players[Players.X] = new MockXPlayer();
-      controller.players[Players.O] = new MockOPlayer();
-
-      controller.startTurn(Players.X);
-
-      $scope.$digest();
-    });
-
-    it('should mark the cell that has been passed to the resolve', function () {
-      controller.reset(Players.X);
-
-      function MockCell() {}
-      MockCell.prototype.mark = function (token) {
-        expect(token).to.equal(Players.X);
-      };
-
-      var cell = new MockCell();
-
-      function MockPlayer() {}
-
-      MockPlayer.prototype.giveTurn = function (turn) {
-        turn.resolve(cell);
-      };
-
-      controller.players[Players.X] = new MockPlayer();
-
-      controller.startTurn(Players.X);
-
-      $scope.$digest();
-    });
-
-    it('should stop giving turns when the board has a completed status', function () {
-      controller.reset(Players.X);
-
-      function MockBoardStatus() {}
-
-      MockBoardStatus.prototype.get = function () {
-        return 'completed';
-      };
-
-      controller.boardStatus = new MockBoardStatus();
-
-      function MockXPlayer() {}
-
-      MockXPlayer.prototype.giveTurn = function (turn) {
-        turn.resolve(controller.board.getCenter()[0]);
-      };
-
-      function MockOPlayer() {}
-
-      MockOPlayer.prototype.giveTurn = function (turn) {
-        throw new Error('Player O\'s #giveTurn should never be called');
-      };
-
-      controller.players[Players.X] = new MockXPlayer();
-      controller.players[Players.O] = new MockOPlayer();
-
-      controller.startTurn(Players.X);
-
-      $scope.$digest();
-    });
-  });
-
-  describe('#choosePlayer', function () {
-    it('should call #reset with the selected player', function () {
-      controller.reset = function (token) {
-        expect(token).to.equal(Players.X);
-      };
-
-      controller.choosePlayer(Players.X);
-
-      controller.reset = function (token) {
-        expect(token).to.equal(Players.O);
-      };
-
-      controller.choosePlayer(Players.O);
+      expect(controller.game.hasStarted).to.be.true;
     });
   });
 
   describe('#isPopoverVisible', function () {
-    it('should be true when the board has a status', function () {
-      controller.status = 'completed';
+    it('should be true when the board is finished', function () {
+      controller.game.isFinished = function () {
+        return true;
+      };
 
       expect(controller.isPopoverVisible()).to.be.true;
     });
 
     it('should be true when the board doesn\'t have a token for the player', function () {
-      controller.token = Players.EMPTY;
+      controller.game.hasNoPlayers = function () {
+        return true;
+      };
 
       expect(controller.isPopoverVisible()).to.be.true;
     });
 
     it('should be false when the board has a token and no status', function () {
-      controller.token = Players.X;
-      controller.status = '';
-
       expect(controller.isPopoverVisible()).to.be.false;
     });
   });

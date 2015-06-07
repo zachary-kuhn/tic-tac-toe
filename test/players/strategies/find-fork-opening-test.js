@@ -14,14 +14,14 @@ describe('FindForkOpening', function () {
   }
 
   describe('for player O', function () {
-    beforeEach(inject(function (FindForkOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindForkOpening(Players.O);
+    beforeEach(inject(function (FindForkOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindForkOpening(Tokens.O);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return all possible fork openings for O', function () {
@@ -37,14 +37,14 @@ describe('FindForkOpening', function () {
   });
 
   describe('for player X', function () {
-    beforeEach(inject(function (FindForkOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindForkOpening(Players.X);
+    beforeEach(inject(function (FindForkOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindForkOpening(Tokens.X);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return all possible fork openings for X', function () {

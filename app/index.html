@@ -9,23 +9,23 @@
 <body ng-app="ticTacToe" ng-cloak>
   <div class="game" ng-controller="BoardCtrl as boardCtrl">
     <div>
-      <div class="row" ng-repeat="row in boardCtrl.board.cells">
-        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.players[boardCtrl.token].doTurn(cell)">
+      <div class="row" ng-repeat="row in boardCtrl.game.board.cells">
+        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.game.players[boardCtrl.token].doTurn(cell)">
           {{cell.token}}
         </div>
       </div>
     </div>
 
     <div class="status-backpane" ng-show="boardCtrl.isPopoverVisible()">
-      <div class="status" ng-show="boardCtrl.boardStatus.get()">
-        {{boardCtrl.boardStatus.get()}}
+      <div class="status" ng-show="boardCtrl.game.status.get()">
+        {{boardCtrl.game.status.get()}}
       </div>
 
       <div class="choose-player">
-        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.X)">
+        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Tokens.X)">
           <span class="choose-text">play as</span>X
         </button>
-        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Players.O)">
+        <button class="player-button" ng-click="boardCtrl.choosePlayer(boardCtrl.Tokens.O)">
           <span class="choose-text">play as</span>O
         </button>
       </div>

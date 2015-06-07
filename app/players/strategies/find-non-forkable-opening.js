@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players, FindForkOpening,
+module.exports = /* @ngInject */ function (_, Tokens, FindForkOpening,
     FindWinningOpening) {
   return function (token, opponentToken) {
     var opponentFork = new FindForkOpening(opponentToken),
@@ -17,7 +17,7 @@ module.exports = /* @ngInject */ function (_, Players, FindForkOpening,
           futureOpenings = opponentFork(board);
           futureWin = win(board);
 
-          opening.mark(Players.EMPTY);
+          opening.mark(Tokens.EMPTY);
 
           /*
            * Choose a place where the opponent cannot fork or a place where next

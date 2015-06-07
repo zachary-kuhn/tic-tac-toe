@@ -1,14 +1,14 @@
 'use strict';
 
-module.exports = /* @ngInject */ function (_, Players) {
+module.exports = /* @ngInject */ function (_, Tokens) {
   function BoardStatus(board) {
     this.board = board;
   }
 
   BoardStatus.prototype.get = function () {
-    if (this.isWon(Players.X)) {
+    if (this.isWon(Tokens.X)) {
       return 'Player X won!';
-    } else if (this.isWon(Players.O)) {
+    } else if (this.isWon(Tokens.O)) {
       return 'Player O won!';
     } else if (this.isTie()) {
       return 'Tie!';

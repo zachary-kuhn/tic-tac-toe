@@ -14,14 +14,14 @@ describe('FindCornerOppositeOpponentOpening', function () {
   }
 
   describe('for player O', function () {
-    beforeEach(inject(function (FindCornerOppositeOpponentOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindCornerOppositeOpponentOpening(Players.X);
+    beforeEach(inject(function (FindCornerOppositeOpponentOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindCornerOppositeOpponentOpening(Tokens.X);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return an array of corners open opposite from player X', function () {
@@ -49,14 +49,14 @@ describe('FindCornerOppositeOpponentOpening', function () {
   });
 
   describe('for player X', function () {
-    beforeEach(inject(function (FindCornerOppositeOpponentOpening, ___, _Board_, _Cell_, Players) {
-      strategy = new FindCornerOppositeOpponentOpening(Players.O);
+    beforeEach(inject(function (FindCornerOppositeOpponentOpening, ___, _Board_, _Cell_, Tokens) {
+      strategy = new FindCornerOppositeOpponentOpening(Tokens.O);
       _ = ___;
       Board = _Board_;
       Cell = _Cell_;
-      X = Players.X;
-      O = Players.O;
-      EMPTY = Players.EMPTY;
+      X = Tokens.X;
+      O = Tokens.O;
+      EMPTY = Tokens.EMPTY;
     }));
 
     it('should return an array of corners open opposite from player O', function () {
