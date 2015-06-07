@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = function (_, Players, FindForkOpening, FindWinningOpening) {
+module.exports = /* @ngInject */ function (_, Players, FindForkOpening,
+    FindWinningOpening) {
   return function (token, opponentToken) {
     var opponentFork = new FindForkOpening(opponentToken),
         win = new FindWinningOpening(token);

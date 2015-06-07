@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (_, Players, ConditionBuilder) {
+module.exports = /* @ngInject */ function (_, Players, ConditionBuilder) {
   return function (player) {
     /*
      * A winning opening is any triple on the board with two of the player and

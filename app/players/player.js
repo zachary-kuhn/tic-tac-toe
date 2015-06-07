@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function () {
+module.exports = /* @ngInject */ function () {
   function Player(token) {
     this.token = token;
   }

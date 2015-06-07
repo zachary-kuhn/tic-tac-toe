@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (_, Players) {
+module.exports = /* @ngInject */ function (_, Players) {
   return function () {
     /*
      * To find a corner opposite the opponent, we look at all diagonals on the

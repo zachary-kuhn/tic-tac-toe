@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (Players) {
+module.exports = /* @ngInject */ function (Players) {
   this.getOpponent = function (token) {
     return token === Players.X ? Players.O : Players.X;
   };

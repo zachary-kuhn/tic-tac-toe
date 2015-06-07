@@ -1,15 +1,16 @@
 'use strict';
 
-module.exports = function (_, Players, HumanPlayer, ComputerPlayer, Board, BoardStatus, Tokens, $q, Cell) {
+module.exports = /* @ngInject */ function (_, Tokens, Players, HumanPlayer,
+    ComputerPlayer, Board, BoardStatus, Cell, $q) {
   var self = this;
 
   this.Players = Players;
 
   function initBoard() {
     self.board = new Board([[new Cell(), new Cell(), new Cell()],
-                             [new Cell(), new Cell(), new Cell()],
-                             [new Cell(), new Cell(), new Cell()]]);
-                             self.boardStatus = new BoardStatus(self.board);
+                            [new Cell(), new Cell(), new Cell()],
+                            [new Cell(), new Cell(), new Cell()]]);
+    self.boardStatus = new BoardStatus(self.board);
   }
 
   this.choosePlayer = function (token) {

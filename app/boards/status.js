@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (_, Players) {
+module.exports = /* @ngInject */ function (_, Players) {
   function BoardStatus(board) {
     this.board = board;
   }

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (_, Rows, Columns) {
+module.exports = /* @ngInject */ function (_, Rows, Columns) {
   var TOP = Rows.TOP,
       MIDDLE = Rows.MIDDLE,
       BOTTOM = Rows.BOTTOM,

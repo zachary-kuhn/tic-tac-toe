@@ -1,9 +1,9 @@
 'use strict';
 
-module.exports = function (_,
-  FindWinningOpening, FindForkOpening, FindCenterOpening,
-  FindCornerOppositeOpponentOpening, FindCornerOpening,
-  FindSideOpening, FindNonForkableOpening) {
+module.exports = /* @ngInject */ function (_,
+    FindWinningOpening, FindForkOpening, FindCenterOpening,
+    FindCornerOppositeOpponentOpening, FindCornerOpening,
+    FindSideOpening, FindNonForkableOpening) {
   return function (board, token, opponentToken) {
     var nonForkable = new FindNonForkableOpening(token, opponentToken);
     /*

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (_, Players, ConditionBuilder) {
+module.exports = /* @ngInject */ function (_, Players, ConditionBuilder) {
   return function (player) {
     /*
      * A fork is any place where it creates an opportunity for the player to win

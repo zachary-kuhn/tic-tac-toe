@@ -1,7 +1,12 @@
 var gulp = require('gulp');
-var browserify = require('gulp-browserify');
 var karma = require('karma').server;
 var lint = require('gulp-eslint');
+
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var uglify = require('gulp-uglify');
+var ngAnnotate = require('browserify-ngannotate');
 
 var paths = {
   js: 'app/**/*.js',
@@ -17,11 +22,19 @@ gulp.task('watch', ['build'], function () {
 
 gulp.task('build', ['build:js', 'build:css', 'build:html']);
 
+gulp.task('build:js', function () {
+  // set up the browserify instance on a task basis
+  var b = browserify({
+    entries: 'app/app.js',
+    debug: false,
+    transform: [ngAnnotate]
+  });
 
-gulp.task('build:js', function() {
-    gulp.src('app/app.js')
-      .pipe(browserify())
-      .pipe(gulp.dest('./build/'))
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('./build/'));
 });
 
 gulp.task('build:css', function () {

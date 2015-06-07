@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (ComputerStrategy, Player) {
+module.exports = /* @ngInject */ function (ComputerStrategy, Player) {
   function ComputerPlayer(token, board, opponentToken) {
     Player.call(this, token);
 
