@@ -18,7 +18,7 @@ module.exports = /* @ngInject */ function (_, Tokens) {
   };
 
   BoardStatus.prototype.isWon = function (player) {
-    // the board is won when any triple has all of its cells marked by the
+    // the board is won when any triple has all of its squares marked by the
     // player
     return _.some(
       this.board.getAllTriples(),
@@ -26,9 +26,9 @@ module.exports = /* @ngInject */ function (_, Tokens) {
   };
 
   BoardStatus.prototype.isTie = function () {
-    // the board is a tie when there are no more empty cells (and technically
+    // the board is a tie when there are no more empty squares (and technically
     // when no one has won but that is not handled here)
-    return !_(this.board.cells).flatten().some(_.method('isEmpty'));
+    return !_(this.board.squares).flatten().some(_.method('isEmpty'));
   };
 
   return BoardStatus;

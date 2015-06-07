@@ -1,24 +1,24 @@
 describe('FindWinningOpening', function () {
-  var _, Board, Cell, X, O, EMPTY, strategy;
+  var _, Board, Square, X, O, EMPTY, strategy;
 
   beforeEach(module('ticTacToe'));
 
-  function toCell(row) {
+  function toSquare(row) {
     return _.map(row, function (token) {
-      if (token instanceof Cell) {
+      if (token instanceof Square) {
         return token;
       } else {
-        return new Cell(token);
+        return new Square(token);
       }
     });
   }
 
   describe('for player O', function () {
-    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Tokens) {
+    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Square_, Tokens) {
       strategy = new FindWinningOpening(Tokens.O);
       _ = ___;
       Board = _Board_;
-      Cell = _Cell_;
+      Square = _Square_;
       X = Tokens.X;
       O = Tokens.O;
       EMPTY = Tokens.EMPTY;
@@ -28,19 +28,19 @@ describe('FindWinningOpening', function () {
       var board = new Board(_.map([[O, EMPTY, EMPTY],
                                    [EMPTY, X, X],
                                    [EMPTY, EMPTY, O]],
-                                  toCell));
+                                  toSquare));
 
       expect(strategy(board)).to.eql([]);
     });
 
     it('should return an array of all available winning moves', function () {
-      var first = new Cell(),
-          third = new Cell(),
-          sixth = new Cell(),
+      var first = new Square(),
+          third = new Square(),
+          sixth = new Square(),
           board = new Board(_.map([[first, EMPTY, third],
                                    [O, O, sixth],
                                    [O, EMPTY, EMPTY]],
-                                  toCell));
+                                  toSquare));
 
       expect(strategy(board)).to.have.length(3);
       expect(strategy(board)).to.include.members([first, third, sixth]);
@@ -48,11 +48,11 @@ describe('FindWinningOpening', function () {
   });
 
   describe('for player X', function () {
-    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Cell_, Tokens) {
+    beforeEach(inject(function (FindWinningOpening, ___, _Board_, _Square_, Tokens) {
       strategy = new FindWinningOpening(Tokens.X);
       _ = ___;
       Board = _Board_;
-      Cell = _Cell_;
+      Square = _Square_;
       X = Tokens.X;
       O = Tokens.O;
       EMPTY = Tokens.EMPTY;
@@ -62,17 +62,17 @@ describe('FindWinningOpening', function () {
       var board = new Board(_.map([[O, EMPTY, X],
                                    [EMPTY, X, EMPTY],
                                    [O, EMPTY, EMPTY]],
-                                  toCell));
+                                  toSquare));
 
       expect(strategy(board)).to.eql([]);
     });
 
     it('should return an array of all available winning moves', function () {
-      var third = new Cell(),
+      var third = new Square(),
           board = new Board(_.map([[EMPTY, EMPTY, third],
                                    [O, X, EMPTY],
                                    [X, EMPTY, EMPTY]],
-                                  toCell));
+                                  toSquare));
 
       expect(strategy(board)).to.have.length(1);
       expect(strategy(board)).to.include(third);

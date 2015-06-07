@@ -65,8 +65,8 @@ describe('Game', function () {
       game.nextTurn(X);
     });
 
-    it('should mark the cell that the player resolves the turn with', function () {
-      var cell = {
+    it('should mark the square that the player resolves the turn with', function () {
+      var square = {
         mark: function (token) {
           expect(token).to.equal(X);
         }
@@ -74,7 +74,7 @@ describe('Game', function () {
 
       game.players[X] = {
         giveTurn: function (turn) {
-          turn.resolve(cell);
+          turn.resolve(square);
         }
       };
 
@@ -88,13 +88,13 @@ describe('Game', function () {
     });
 
     it('should give the turn to the next player', function () {
-      var cell = {
+      var square = {
         mark: function (token) {}
       };
 
       game.players[X] = {
         giveTurn: function (turn) {
-          turn.resolve(cell);
+          turn.resolve(square);
         }
       };
 
@@ -114,13 +114,13 @@ describe('Game', function () {
         return true;
       };
 
-      var cell = {
+      var square = {
         mark: function (token) {}
       };
 
       game.players[X] = {
         giveTurn: function (turn) {
-          turn.resolve(cell);
+          turn.resolve(square);
         }
       };
 

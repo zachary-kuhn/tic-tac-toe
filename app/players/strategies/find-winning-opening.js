@@ -4,7 +4,7 @@ module.exports = /* @ngInject */ function (_, Tokens, ConditionBuilder) {
   return function (token) {
     /*
      * A winning opening is any triple on the board with two of the player and
-     * one empty cell.
+     * one empty square.
      */
     return function (board) {
       return _(board.getAllTriples()).filter(

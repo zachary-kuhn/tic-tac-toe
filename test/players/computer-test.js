@@ -1,20 +1,20 @@
 describe('ComputerPlayer', function () {
-  var X, O, EMPTY, _, $q, $scope, Cell, player, board;
+  var X, O, EMPTY, _, $q, $scope, Square, player, board;
 
   beforeEach(module('ticTacToe'));
 
-  function toCell(row) {
+  function toSquare(row) {
     return _.map(row, function (token) {
-      if (token instanceof Cell) {
+      if (token instanceof Square) {
         return token;
       } else {
-        return new Cell(token);
+        return new Square(token);
       }
     });
   }
 
-  beforeEach(inject(function (ComputerPlayer, Tokens, Board, _Cell_, _$q_, ___, $rootScope) {
-    Cell = _Cell_;
+  beforeEach(inject(function (ComputerPlayer, Tokens, Board, _Square_, _$q_, ___, $rootScope) {
+    Square = _Square_;
     _ = ___;
     $q = _$q_;
     $scope = $rootScope.$new();
@@ -24,7 +24,7 @@ describe('ComputerPlayer', function () {
     board = new Board(_.map([[EMPTY, EMPTY, EMPTY],
                              [EMPTY, EMPTY, EMPTY],
                              [EMPTY, EMPTY, EMPTY]],
-                            toCell));
+                            toSquare));
     player = new ComputerPlayer(Tokens.X);
   }));
 
@@ -33,8 +33,8 @@ describe('ComputerPlayer', function () {
 
     player.giveTurn(deferred, board);
 
-    deferred.promise.then(function (cell) {
-      expect(cell).to.not.be.empty;
+    deferred.promise.then(function (square) {
+      expect(square).to.not.be.empty;
     });
 
     $scope.$digest();

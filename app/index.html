@@ -9,9 +9,9 @@
 <body ng-app="ticTacToe" ng-cloak>
   <div class="game" ng-controller="BoardCtrl as boardCtrl">
     <div>
-      <div class="row" ng-repeat="row in boardCtrl.game.board.cells">
-        <div class="cell" ng-repeat="cell in row" ng-click="boardCtrl.game.players[boardCtrl.token].doTurn(cell)">
-          {{cell.token}}
+      <div class="row" ng-repeat="row in boardCtrl.game.board.squares">
+        <div class="square" ng-repeat="square in row" ng-click="boardCtrl.game.players[boardCtrl.token].doTurn(square)">
+          {{square.token}}
         </div>
       </div>
     </div>

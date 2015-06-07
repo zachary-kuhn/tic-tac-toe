@@ -1,5 +1,5 @@
 describe('BoardCtrl', function () {
-  var controller, Tokens, Board, Cell, $scope;
+  var controller, Tokens, Board, Square, $scope;
 
   beforeEach(module('ticTacToe', function ($provide) {
     $provide.factory('Game', function () {
@@ -23,10 +23,10 @@ describe('BoardCtrl', function () {
     });
   }));
 
-  beforeEach(inject(function ($controller, _Tokens_, _Board_, _Cell_, $rootScope) {
+  beforeEach(inject(function ($controller, _Tokens_, _Board_, _Square_, $rootScope) {
     Tokens = _Tokens_;
     Board = _Board_;
-    Cell = _Cell_;
+    Square = _Square_;
     $scope = $rootScope.$new();
     controller = $controller('BoardCtrl', { $scope: $scope });
   }));

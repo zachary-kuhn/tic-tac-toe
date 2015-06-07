@@ -9,7 +9,7 @@ module.exports = /* @ngInject */ function (_, Tokens, ConditionBuilder) {
      *
      * How we find a fork is to look at all possible three-in-a-row's on the
      * board, filter down to those who consist of 1 of the player's tokens and
-     * two empty spaces, and then find any empty cell that shows up in that list
+     * two empty spaces, and then find any empty square that shows up in that list
      * twice.
      */
     return function (board) {

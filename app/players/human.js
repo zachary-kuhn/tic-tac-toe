@@ -11,9 +11,9 @@ module.exports = /* @ngInject */ function (Player) {
     this.turn = turn;
   };
 
-  HumanPlayer.prototype.doTurn = function (cell) {
-    if (cell.isEmpty()) {
-      this.turn.resolve(cell);
+  HumanPlayer.prototype.doTurn = function (square) {
+    if (square.isEmpty()) {
+      this.turn.resolve(square);
     }
   };
 

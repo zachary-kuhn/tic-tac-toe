@@ -9,13 +9,13 @@ module.exports = /* @ngInject */ function (_, Rows, Columns) {
       CENTER = Columns.CENTER,
       RIGHT = Columns.RIGHT;
 
-  function Board(cells) {
-    this.cells = cells;
+  function Board(squares) {
+    this.squares = squares;
   }
 
   Board.prototype.getAllTriples = function () {
-    var rows = this.cells;
-    var cols = _.spread(_.zip)(this.cells);
+    var rows = this.squares;
+    var cols = _.spread(_.zip)(this.squares);
     var diagonals = this.getDiagonals();
 
     return rows.concat(cols).concat(diagonals);
@@ -26,33 +26,33 @@ module.exports = /* @ngInject */ function (_, Rows, Columns) {
   };
 
   Board.prototype.getDownwardDiagonal = function () {
-    return [this.cells[TOP][LEFT], this.cells[MIDDLE][CENTER], this.cells[BOTTOM][RIGHT]];
+    return [this.squares[TOP][LEFT], this.squares[MIDDLE][CENTER], this.squares[BOTTOM][RIGHT]];
   };
 
   Board.prototype.getUpwardDiagonal = function () {
-    return [this.cells[TOP][RIGHT], this.cells[MIDDLE][CENTER], this.cells[BOTTOM][LEFT]];
+    return [this.squares[TOP][RIGHT], this.squares[MIDDLE][CENTER], this.squares[BOTTOM][LEFT]];
   };
 
   Board.prototype.getCenter = function () {
-    return [this.cells[MIDDLE][CENTER]];
+    return [this.squares[MIDDLE][CENTER]];
   };
 
-  Board.prototype.isCorner = function (cell) {
-    return _.contains(this.getCorners(), cell);
+  Board.prototype.isCorner = function (square) {
+    return _.contains(this.getCorners(), square);
   };
 
   Board.prototype.getCorners = function () {
-    return [this.cells[TOP][LEFT], this.cells[TOP][RIGHT],
-            this.cells[BOTTOM][LEFT], this.cells[BOTTOM][RIGHT]];
+    return [this.squares[TOP][LEFT], this.squares[TOP][RIGHT],
+            this.squares[BOTTOM][LEFT], this.squares[BOTTOM][RIGHT]];
   };
 
-  Board.prototype.isSide = function (cell) {
-    return _.contains(this.getSides(), cell);
+  Board.prototype.isSide = function (square) {
+    return _.contains(this.getSides(), square);
   };
 
   Board.prototype.getSides = function () {
-    return [this.cells[TOP][CENTER], this.cells[MIDDLE][LEFT],
-            this.cells[MIDDLE][RIGHT], this.cells[BOTTOM][CENTER]];
+    return [this.squares[TOP][CENTER], this.squares[MIDDLE][LEFT],
+            this.squares[MIDDLE][RIGHT], this.squares[BOTTOM][CENTER]];
   };
 
   return Board;

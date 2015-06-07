@@ -41,7 +41,7 @@ mod.constant('Tokens', {
   }
 });
 
-mod.factory('Cell', require('./boards/cell'));
+mod.factory('Square', require('./boards/square'));
 mod.factory('Board', require('./boards/board'));
 mod.factory('BoardStatus', require('./boards/status'));
 mod.factory('Game', require('./boards/game'));

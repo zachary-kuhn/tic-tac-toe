@@ -1,5 +1,5 @@
 describe('BoardStatus', function () {
-  var Tokens, Board, Cell, _;
+  var Tokens, Board, Square, _;
 
   var status;
 
@@ -17,19 +17,19 @@ describe('BoardStatus', function () {
 
   beforeEach(module('ticTacToe'));
 
-  beforeEach(inject(function (Board, Cell, BoardStatus, _Tokens_, ___) {
+  beforeEach(inject(function (Board, Square, BoardStatus, _Tokens_, ___) {
     Tokens = _Tokens_;
     _ = ___;
 
-    first = new Cell();
-    second = new Cell();
-    third = new Cell();
-    fourth = new Cell();
-    fifth = new Cell();
-    sixth = new Cell();
-    seventh = new Cell();
-    eighth = new Cell();
-    ninth = new Cell();
+    first = new Square();
+    second = new Square();
+    third = new Square();
+    fourth = new Square();
+    fifth = new Square();
+    sixth = new Square();
+    seventh = new Square();
+    eighth = new Square();
+    ninth = new Square();
 
     board = new Board([[first, second, third],
                        [fourth, fifth, sixth],
@@ -45,14 +45,14 @@ describe('BoardStatus', function () {
     });
 
     function markWithToken(triple, token) {
-      _.forEach(triple, function (cell) {
-        cell.mark(token);
+      _.forEach(triple, function (square) {
+        square.mark(token);
       });
     }
 
     function resetTriple(triple) {
-      _.forEach(triple, function (cell) {
-        cell.mark(Tokens.EMPTY);
+      _.forEach(triple, function (square) {
+        square.mark(Tokens.EMPTY);
       });
     }
 
@@ -94,11 +94,11 @@ describe('BoardStatus', function () {
   }
 
   describe('#isTie', function () {
-    it('should be false when there are cells available', function () {
+    it('should be false when there are squares available', function () {
       expect(status.isTie()).to.be.false;
     });
 
-    it('should be true when there are no more cells available', function () {
+    it('should be true when there are no more squares available', function () {
       markBoardAsTie();
 
       expect(status.isTie()).to.be.true;

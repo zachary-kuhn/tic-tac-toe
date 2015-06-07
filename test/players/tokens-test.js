@@ -3,12 +3,12 @@ describe('Tokens', function () {
 
   beforeEach(module('ticTacToe'));
 
-  function toCell(row) {
+  function toSquare(row) {
     return _.map(row, function (token) {
-      if (token instanceof Cell) {
+      if (token instanceof Square) {
         return token;
       } else {
-        return new Cell(token);
+        return new Square(token);
       }
     });
   }

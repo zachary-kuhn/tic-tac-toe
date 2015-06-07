@@ -1,13 +1,13 @@
 'use strict';
 
-module.exports = /* @ngInject */ function ($q, Board, BoardStatus, Cell,
+module.exports = /* @ngInject */ function ($q, Board, BoardStatus, Square,
     Tokens) {
   function Game(players, board, status) {
     this.players = players;
 
-    this.board = board || new Board([[new Cell(), new Cell(), new Cell()],
-                                     [new Cell(), new Cell(), new Cell()],
-                                     [new Cell(), new Cell(), new Cell()]]);
+    this.board = board || new Board([[new Square(), new Square(), new Square()],
+                                     [new Square(), new Square(), new Square()],
+                                     [new Square(), new Square(), new Square()]]);
 
     this.status = status || new BoardStatus(this.board);
   }
@@ -18,8 +18,8 @@ module.exports = /* @ngInject */ function ($q, Board, BoardStatus, Cell,
 
     this.players[token].giveTurn(turn, this.board);
 
-    turn.promise.then(function (cell) {
-      cell.mark(token);
+    turn.promise.then(function (square) {
+      square.mark(token);
 
       if (!self.isFinished()) {
         self.nextTurn(Tokens.getOpponent(token));

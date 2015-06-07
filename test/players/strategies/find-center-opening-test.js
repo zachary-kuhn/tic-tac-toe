@@ -1,24 +1,24 @@
 describe('FindCenterOpening', function () {
-  var _, Board, Cell, X, O, EMPTY, strategy;
+  var _, Board, Square, X, O, EMPTY, strategy;
 
   beforeEach(module('ticTacToe'));
 
-  beforeEach(inject(function (FindCenterOpening, ___, _Board_, _Cell_, Tokens) {
+  beforeEach(inject(function (FindCenterOpening, ___, _Board_, _Square_, Tokens) {
     strategy = new FindCenterOpening();
     _ = ___;
     Board = _Board_;
-    Cell = _Cell_;
+    Square = _Square_;
     X = Tokens.X;
     O = Tokens.O;
     EMPTY = Tokens.EMPTY;
   }));
 
-  function toCell(row) {
+  function toSquare(row) {
     return _.map(row, function (token) {
-      if (token instanceof Cell) {
+      if (token instanceof Square) {
         return token;
       } else {
-        return new Cell(token);
+        return new Square(token);
       }
     });
   }
@@ -27,7 +27,7 @@ describe('FindCenterOpening', function () {
     var board = new Board(_.map([[EMPTY, EMPTY, EMPTY],
                                  [EMPTY, X, EMPTY],
                                  [EMPTY, EMPTY, EMPTY]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.eql([]);
   });
@@ -36,17 +36,17 @@ describe('FindCenterOpening', function () {
     var board = new Board(_.map([[EMPTY, EMPTY, EMPTY],
                                  [EMPTY, O, EMPTY],
                                  [EMPTY, EMPTY, EMPTY]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.eql([]);
   });
 
   it('should return an array with the center when it is empty', function () {
-    var center = new Cell(EMPTY),
+    var center = new Square(EMPTY),
         board = new Board(_.map([[EMPTY, EMPTY, EMPTY],
                                  [EMPTY, center, EMPTY],
                                  [EMPTY, EMPTY, EMPTY]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.eql([center]);
   });

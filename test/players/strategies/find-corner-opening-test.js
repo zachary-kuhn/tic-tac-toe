@@ -1,24 +1,24 @@
 describe('FindCornerOpening', function () {
-  var _, Board, Cell, X, O, EMPTY, strategy;
+  var _, Board, Square, X, O, EMPTY, strategy;
 
   beforeEach(module('ticTacToe'));
 
-  beforeEach(inject(function (FindCornerOpening, ___, _Board_, _Cell_, Tokens) {
+  beforeEach(inject(function (FindCornerOpening, ___, _Board_, _Square_, Tokens) {
     strategy = new FindCornerOpening();
     _ = ___;
     Board = _Board_;
-    Cell = _Cell_;
+    Square = _Square_;
     X = Tokens.X;
     O = Tokens.O;
     EMPTY = Tokens.EMPTY;
   }));
 
-  function toCell(row) {
+  function toSquare(row) {
     return _.map(row, function (token) {
-      if (token instanceof Cell) {
+      if (token instanceof Square) {
         return token;
       } else {
-        return new Cell(token);
+        return new Square(token);
       }
     });
   }
@@ -27,7 +27,7 @@ describe('FindCornerOpening', function () {
     var board = new Board(_.map([[X, EMPTY, O],
                                  [EMPTY, EMPTY, EMPTY],
                                  [X, EMPTY, O]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.have.length(0);
   });
@@ -36,7 +36,7 @@ describe('FindCornerOpening', function () {
     var board = new Board(_.map([[X, EMPTY, EMPTY],
                                  [EMPTY, EMPTY, EMPTY],
                                  [EMPTY, EMPTY, EMPTY]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.have.length(3);
   });
@@ -45,7 +45,7 @@ describe('FindCornerOpening', function () {
     var board = new Board(_.map([[EMPTY, EMPTY, X],
                                  [EMPTY, EMPTY, EMPTY],
                                  [EMPTY, EMPTY, O]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.have.length(2);
   });
@@ -54,7 +54,7 @@ describe('FindCornerOpening', function () {
     var board = new Board(_.map([[EMPTY, EMPTY, X],
                                  [EMPTY, EMPTY, EMPTY],
                                  [X, EMPTY, O]],
-                                toCell));
+                                toSquare));
 
     expect(strategy(board)).to.have.length(1);
   });
